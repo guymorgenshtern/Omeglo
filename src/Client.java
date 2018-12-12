@@ -18,7 +18,6 @@ public class Client {
     PrintWriter outputStream;
     BufferedReader reader;
 
-
     public static void main(String[] args) {
         new Client().go();
     }

@@ -11,7 +11,7 @@ public class Server {
 	ServerSocket serverSock;// server socket for connection
 	static Boolean running = true; // controls if the server is accepting clients
 	ArrayList<ConnectionToClient> clientList = new ArrayList<>();
-	int clientIndex;
+	int clientIndex = -1;
 
 	/**
 	 * Main
@@ -108,6 +108,7 @@ public class Server {
 								output.println("~Welcome To The Chat Server " + name + "~");
 								output.flush();
 							} else if (msg.substring(1, 3).equals("pm")) {
+								System.out.println("Private Message");
 
 							}
 						} else {
