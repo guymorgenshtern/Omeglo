@@ -99,6 +99,11 @@ public class Server {
 					if (input.ready()) { // check for an incoming messge
 						msg = input.readLine(); // get a message from the client
 						System.out.println(msg);
+						
+						if(msg.length() == 0) {
+							msg = " ";
+						}
+						
 						if (msg.substring(0, 1).equals("/")) {
 							if (msg.substring(1, 5).equals("name") && setName == false) {
 								name = msg.substring(6);
