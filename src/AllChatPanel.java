@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -58,6 +60,7 @@ public class AllChatPanel extends JPanel {
 
 		textField = new JTextField(8);
 		textField.setBounds(10, send.getBounds().y, send.getBounds().x - pane.getBounds().x - 10, 30);
+		textField.addKeyListener(new myKeyListener());
 
 		pane.add(scroll);
 		pane.add(send);
@@ -98,5 +101,29 @@ public class AllChatPanel extends JPanel {
 				textField.setText("");
 			}
 		}
+	}
+	
+	private class myKeyListener implements KeyListener {
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				window.sendAll(textField.getText());
+				textField.setText("");
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 }
