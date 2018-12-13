@@ -132,7 +132,7 @@ public class Server2 {
                                     }
 
                                     if (!userTaken && !setName) {
-                                        clientList.get(clientConnection).setName(param);
+                                        clientConnection.setName(param);
                                         updateStatusList();
                                         name = param;
                                         setName = true;
