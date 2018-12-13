@@ -64,7 +64,6 @@ public class Server2 {
         private boolean running;
         String name = "";
         boolean setName = false;
-        int clientIndex = -1;
 
         /*
          * ConnectionHandler Constructor
@@ -133,7 +132,7 @@ public class Server2 {
                                     }
 
                                     if (!userTaken && !setName) {
-                                        clientList.get(clientList.size()-1).setName(param);
+                                        clientList.get(clientConnection).setName(param);
                                         updateStatusList();
                                         name = param;
                                         setName = true;
@@ -146,8 +145,9 @@ public class Server2 {
                                     }
 
                                 } else if (command[1].equals("pm")) {
+                                    System.out.println("pm hit");
                                     for (ConnectionToClient client: clientList) {
-
+                                        System.out.println(command[2] + " " + client.getName());
                                         if (command[2].equals(client.getName())) {
                                             client.write("PM " + param + ": " + msg.substring(msg.substring(4).indexOf(" ") + 4));
                                             userFound = true;
