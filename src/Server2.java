@@ -149,7 +149,7 @@ public class Server2 {
                                     for (ConnectionToClient client: clientList) {
                                         System.out.println(command[2] + " " + client.getName());
                                         if (command[2].equals(client.getName())) {
-                                            client.write("PM " + param + ": " + msg.substring(msg.substring(4).indexOf(" ") + 4));
+                                            client.write("PM " + clientConnection.getName() + ": " + command[3]);
                                             userFound = true;
                                         }
                                     }
@@ -215,10 +215,11 @@ public class Server2 {
 
         public String[] findCommand(String msg) {
 
-            String[] commandVariables = new String[3];
+            String[] commandVariables = new String[4];
             String indicator = "";
             String command = "";
             String parameter = "";
+            String message = "";
 
             if (msg.substring(0, 1).equals("/")) {
                 indicator = "/";
@@ -229,10 +230,18 @@ public class Server2 {
 
                 String leftOverString = msg.substring(msg.indexOf(" "));
                 parameter = leftOverString.substring(leftOverString.indexOf(" ") + 1);
+                if (command.equals("pm")) {
+                    parameter = leftOverString.substring(leftOverString.indexOf(" ") + 1,
+                            leftOverString.indexOf(" ", leftOverString.indexOf(" ") + 1));
+                    leftOverString = leftOverString.substring(leftOverString.indexOf(" ", leftOverString.indexOf(" ") + 1) + 1);
+                    message = leftOverString;
+                }
+
 
             commandVariables[0] = indicator;
             commandVariables[1] = command;
             commandVariables[2] = parameter;
+            commandVariables[3] = message;
 
             return commandVariables;
 

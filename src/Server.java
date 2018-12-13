@@ -142,6 +142,7 @@ public class Server {
                                 } else if (command[1].equals("pm")) {
                                     for (ConnectionToClient client: clientList) {
                                         if (command[2].equals(client.getName())) {
+                                            clientConnection.write("PM " + name + ": " + command[2]);
                                             client.write("PM " + name + ": " + command[2]);
                                             userFound = true;
                                         }
