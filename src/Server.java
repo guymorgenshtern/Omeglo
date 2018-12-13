@@ -8,132 +8,6 @@ import java.util.ArrayList;
 
 public class Server {
 
-<<<<<<< HEAD
-	ServerSocket serverSock;// server socket for connection
-	static Boolean running = true; // controls if the server is accepting clients
-	ArrayList<ConnectionToClient> clientList = new ArrayList<>();
-	int clientIndex = -1;
-
-	/**
-	 * Main
-	 * 
-	 * @param args parameters from command line
-	 */
-	public static void main(String[] args) {
-		new Server().go(); // start the server
-	}
-
-	/**
-	 * Go Starts the server
-	 */
-	public void go() {
-		System.out.println("Waiting for a client connection..");
-
-		Socket client = null;// hold the client connection
-
-		try {
-			serverSock = new ServerSocket(5000); // assigns an port to the server
-			while (running) { // this loops to accept multiple clients
-				client = serverSock.accept(); // wait for connection
-				System.out.println("Client connected");
-				clientList.add(new ConnectionToClient(client));
-				clientIndex++;
-				// Note: you might want to keep references to all clients if you plan to
-				// broadcast messages
-				// Also: Queues are good tools to buffer incoming/outgoing messages
-				Thread t = new Thread(new ConnectionHandler(client, clientIndex)); // create a thread for the new client
-																					// and pass in the socket
-				t.start(); // start the new thread
-			}
-		} catch (Exception e) {
-			// System.out.println("Error accepting connection");
-			// close all and quit
-			try {
-				client.close();
-			} catch (Exception e1) {
-				System.out.println("Failed to close socket");
-			}
-			System.exit(-1);
-		}
-	}
-
-	// ***** Inner class - thread for client connection
-	class ConnectionHandler implements Runnable {
-		private PrintWriter output; // assign printwriter to network stream
-		private BufferedReader input; // Stream for network input
-		private Socket client; // keeps track of the client socket
-		private boolean running;
-		String name = " ";
-		boolean setName = false;
-		int clientIndex;
-
-		/*
-		 * ConnectionHandler Constructor
-		 * 
-		 * @param the socket belonging to this client connection
-		 */
-		ConnectionHandler(Socket s, int clientIndex) {
-			this.client = s; // constructor assigns client to this
-			this.clientIndex = clientIndex;
-			try { // assign all connections to client
-				this.output = new PrintWriter(client.getOutputStream());
-				InputStreamReader stream = new InputStreamReader(client.getInputStream());
-				this.input = new BufferedReader(stream);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			running = true;
-		} // end of constructor
-
-		/*
-		 * run executed on start of thread
-		 */
-		public void run() {
-
-			// Get a message from the client
-			String msg = " ";
-			String pmName = " ";
-
-			// Get a message from the client
-			while (running) { // loop unit a message is received
-				try {
-					if (input.ready()) { // check for an incoming messge
-						msg = input.readLine(); // get a message from the client
-						System.out.println(msg);
-						
-						if(msg.length() == 0) {
-							msg = " ";
-						}
-						
-						if (msg.substring(0, 1).equals("/")) {
-							if (msg.substring(1, 5).equals("name") && setName == false) {
-								name = msg.substring(6);
-								System.out.println(name);
-								clientList.get(clientIndex).setName(name);
-								setName = true;
-								output.println("~Welcome To The Chat Server " + name + "~");
-								output.flush();
-							} else if (msg.substring(1, 3).equals("pm")) {
-								System.out.println("Private Message");
-
-							}
-						} else {
-							System.out.println("msg from client: " + msg);
-							for (ConnectionToClient client : clientList) {
-								client.write(name + ": " + msg);
-							}
-						}
-					}
-				} catch (IOException e) {
-					System.out.println("Failed to receive msg from the client");
-					e.printStackTrace();
-				}
-			}
-
-			// Send a message to the client
-
-			// close the socket
-=======
     ServerSocket serverSock;// server socket for connection
     static Boolean running = true; // controls if the server is accepting clients
     ArrayList<ConnectionToClient> clientList = new ArrayList<>();
@@ -203,7 +77,7 @@ public class Server {
             this.clientConnection = connection;
 
             clientList.add(clientConnection);
-            updateStatusList();
+
             try { // assign all connections to client
                 this.output = new PrintWriter(client.getOutputStream());
                 InputStreamReader stream = new InputStreamReader(client.getInputStream());
@@ -226,7 +100,6 @@ public class Server {
             boolean userTaken = false;
             boolean admin = false;
             String[] command;
-            String param = " ";
 
             // Get a message from the client
             while (running) { // loop unit a message is received
@@ -235,11 +108,12 @@ public class Server {
                         userFound = false;
                         msg = input.readLine(); // get a message from the client
 
-                        if ((!msg.startsWith("/")) || (!msg.startsWith("!"))) {
+                        if ((!(msg.startsWith("/"))) && (!(msg.startsWith("!")))) {
                             for (ConnectionToClient client : clientList) {
                                 client.write(clientConnection.getName() + ": " + msg);
                             }
                         } else {
+                            System.out.println("yeet");
                             command = findCommand(msg);
                             if (command[0].equals("/")) {
                                 if (command[1].equals("name") ) {
@@ -254,21 +128,21 @@ public class Server {
                                     }
 
                                     if (!userTaken && !setName) {
-                                        clientList.get(clientIndex).setName(param);
-                                        name = param;
+                                        clientList.get(clientIndex).setName(command[2]);
+                                        name = command[2];
                                         setName = true;
+                                        updateStatusList();
                                         if (name.equals("admin")) {
                                             admin = true;
                                         }
-                                        output.println("~Welcome To The Chat Server " + param + "~");
+                                        output.println("~Welcome To The Chat Server " + command[2] + "~");
                                         output.flush();
                                     }
 
                                 } else if (command[1].equals("pm")) {
                                     for (ConnectionToClient client: clientList) {
-
                                         if (command[2].equals(client.getName())) {
-                                            client.write("PM " + param + ": " + msg.substring(msg.substring(4).indexOf(" ") + 4));
+                                            client.write("PM " + name + ": " + command[2]);
                                             userFound = true;
                                         }
                                     }
@@ -283,7 +157,7 @@ public class Server {
                                 if (name.equals(admin)) {
                                     if (command.equals("kick")) {
                                         for (ConnectionToClient client: clientList) {
-                                            if (client.getName().equals(param)) {
+                                            if (client.getName().equals(command[2])) {
                                                 client.write("---You Have Been Stopped---");
                                                 client.socket.getInputStream().close();
                                                 client.socket.getOutputStream().close();
@@ -312,7 +186,6 @@ public class Server {
             // Send a message to the client
 
             // close the socket
->>>>>>> 67ac9e325bcf807b635eade598f8a9a83b21a389
 //            try {
 //                input.close();
 //                output.close();
@@ -323,16 +196,18 @@ public class Server {
         }
 
         public void updateStatusList() {
+            String statusList =" ";
             for (int i = 0; i < clientList.size();i++) {
                 for (ConnectionToClient client: clientList) {
-                    clientList.get(i).write("*"+ client.getName());
+                    statusList = "*" + statusList + client.getName();
                 }
+                clientList.get(i).write(statusList + "*");
             }
         }
 
         public String[] findCommand(String msg) {
 
-            String[] commandVariables = new String[2];
+            String[] commandVariables = new String[3];
             String indicator = "";
             String command = "";
             String parameter = "";
@@ -342,10 +217,11 @@ public class Server {
             } else if (msg.startsWith("!")) {
                 indicator = "!";
             }
-                command = msg.substring(1, msg.indexOf(" "));
+            command = msg.substring(1, msg.indexOf(" "));
 
-                String leftOverString = msg.substring(msg.indexOf(" "));
-                parameter = leftOverString.substring(leftOverString.indexOf(" ") + 1);
+            String leftOverString = msg.substring(msg.indexOf(" "));
+            parameter = leftOverString.substring(leftOverString.indexOf(" ") + 1);
+            System.out.println(parameter);
 
             commandVariables[0] = indicator;
             commandVariables[1] = command;
@@ -395,6 +271,6 @@ public class Server {
         public void setAdmin (boolean admin) {
 
         }
-     }
+    }
 
 }
