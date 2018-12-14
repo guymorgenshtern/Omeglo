@@ -37,7 +37,6 @@ public class Window extends JFrame {
 	InputStreamReader inputStream;
 	PrintWriter outputStream;
 	BufferedReader reader;    
-	JLayeredPane allPane;
 		
     public Window(int x, int y) {
         super("Chat++");
@@ -45,8 +44,6 @@ public class Window extends JFrame {
         
 		try {
 			mySocket = new Socket("127.0.0.1", 5000);
-			//mySocket = new Socket("98:fe:94:4b:7e:82", 5000);
-
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -60,15 +57,11 @@ public class Window extends JFrame {
         this.setSize(new Dimension(x, y));
         this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setLayout(new BorderLayout());
         
-		allPane = new JLayeredPane();
-		allPane.setBounds(0, 0, x, y);
-		allPane.setLayout(new BorderLayout());
+
 
 		this.dashboardPanel = new DashBoardPanel(this);
-        allPane.add(dashboardPanel);
-
-        allPane.setDoubleBuffered(true);
 
         
         //generate panels
@@ -189,18 +182,27 @@ public class Window extends JFrame {
 
     private void switchPanel(JPanel newPanel) {
         getContentPane().removeAll();
-    	allPane.removeAll();
-        dashboardPanel.setVisible(true);
-        newPanel.setDoubleBuffered(true);
         
         
-        allPane.add(dashboardPanel);
-        allPane.add(newPanel);
+        dashboardPanel.setPreferredSize(new Dimension(100, 400));
+        newPanel.setPreferredSize(new Dimension(400, 400));
+        
+        getContentPane().add(dashboardPanel, BorderLayout.WEST);
+        getContentPane().add(newPanel, BorderLayout.EAST);
 
-        getContentPane().add(allPane); 
+
         
+        dashboardPanel.setVisible(true);
+        newPanel.setVisible(true);
+
         getContentPane().revalidate();
         getContentPane().repaint(); 
     }
+
+
+
+	public AllChatPanel getAllChatPanel() {
+		return allChatPanel;
+	}
     
 }

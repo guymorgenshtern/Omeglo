@@ -1,4 +1,4 @@
-import java.awt.BorderLayout;
+import java.awt.BorderLayout; 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -16,7 +16,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
+ 
 public class DashBoardPanel extends JPanel {
 
 	private Window window;
@@ -32,11 +32,10 @@ public class DashBoardPanel extends JPanel {
 	
 	public ArrayList<String> onlineList = new ArrayList<String>();
 	public ArrayList<JButton> buttonList = new ArrayList<JButton>();
+	
 
 	DashBoardPanel(Window window) {
-		
-
-		
+				
 		
 		this.window = window;
 		this.x = window.x;
@@ -57,13 +56,13 @@ public class DashBoardPanel extends JPanel {
 //		pane.add(textArea);
 		add(pane);
 		
-		onlineList.add("NISNFAISA");
-		onlineList.add("NISNFAISA");
-		onlineList.add("NISNFAISA");
-		onlineList.add("NISNFAISA");
-		onlineList.add("NISNFAISA");
-		onlineList.add("NISNFAISA");
-		revalidateButtons();
+//		onlineList.add("NISNFAISA");
+//		onlineList.add("NISNFAISA");
+//		onlineList.add("NISNFAISA");
+//		onlineList.add("NISNFAISA");
+//		onlineList.add("NISNFAISA");
+//		onlineList.add("NISNFAISA");
+//		revalidateButtons();
 
 		
 		setOpaque(false);
@@ -91,7 +90,7 @@ public class DashBoardPanel extends JPanel {
 //			b.draw(g, this);
 //		}
 		
-		//revalidateButtons();
+		revalidateButtons();
 		repaint();
 	}
 	
@@ -102,6 +101,8 @@ public class DashBoardPanel extends JPanel {
 		for (int i = 0; i < onlineList.size(); i++) {
 			JButton b = new JButton(onlineList.get(i));
 			b.setBounds(10, i*50 + 10, 80, 30);
+			Action a = new Action(onlineList.get(i));
+			b.addActionListener(a);
 			pane.add(b);
 		}
 		add(pane);
@@ -124,6 +125,25 @@ public class DashBoardPanel extends JPanel {
 	
 	public ArrayList<String> getOnlineList() {
 		return onlineList;
+	}
+	
+	private class Action implements ActionListener {
+		
+		String text;
+		
+		Action(String text) {
+			this.text = text;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+
+			window.getAllChatPanel().setTextFieldText("/pm " + text + " ");
+
+			
+
+		}
 	}
 	
 
