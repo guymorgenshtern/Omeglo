@@ -227,21 +227,18 @@ public class Server2 {
             } else if (msg.startsWith("!")) {
                 indicator = "!";
             }
-            try {
+
                 command = msg.substring(1, msg.indexOf(" "));
 
                 String leftOverString = msg.substring(msg.indexOf(" "));
                 parameter = leftOverString.substring(leftOverString.indexOf(" ") + 1);
-                if (command.equals("pm")) {
+
+                try {
                     parameter = leftOverString.substring(leftOverString.indexOf(" ") + 1,
                             leftOverString.indexOf(" ", leftOverString.indexOf(" ") + 1));
                     leftOverString = leftOverString.substring(leftOverString.indexOf(" ", leftOverString.indexOf(" ") + 1) + 1);
                     message = leftOverString;
-                }
-
-
             } catch (StringIndexOutOfBoundsException e) {
-                output.write("---Command Not Found---");
             }
 
             commandVariables[0] = indicator;
