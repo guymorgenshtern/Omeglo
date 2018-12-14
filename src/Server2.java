@@ -73,10 +73,10 @@ public class Server2 {
         ConnectionHandler(Socket s, ConnectionToClient connection) {
             this.client = s; // constructor assigns client to this
             this.clientConnection = connection;
-            clientList.add(clientConnection);
+
             try { // assign all connections to client
                 this.output = new PrintWriter(client.getOutputStream());
-                InputStreamReader stream = new InputStreamReader(client.getInputStream());
+                InputStreamReader stream = new InputStreamReader(client.getInputStream()); //get clients input stream
                 this.input = new BufferedReader(stream);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -88,10 +88,7 @@ public class Server2 {
          * run executed on start of thread
          */
         public void run() {
-
-            // Get a message from the client
             String msg = " ";
-            String pmName = "";
             boolean userFound = false;
             boolean userTaken = false;
             boolean admin = false;
@@ -105,10 +102,7 @@ public class Server2 {
                         userFound = false;
                         msg = input.readLine(); // get a message from the client
 
-                    	System.out.println(msg + "<--");
-
-                        
-                        if ((!msg.startsWith("/")) && (!msg.startsWith("!"))) {
+                        if ((!msg.startsWith("/")) && (!msg.startsWith("!"))) { //command indicators
                             for (ConnectionToClient client : clientList) {
                                 client.write(clientConnection.getName() + ": " + msg);
                             }
@@ -133,9 +127,10 @@ public class Server2 {
 
                                     if (!userTaken && !setName) {
                                         clientConnection.setName(param);
-                                        updateStatusList();
                                         name = param;
                                         setName = true;
+                                        clientList.add(clientConnection);
+                                        updateStatusList();
                                         if (name.equals("admin")) {
                                             clientConnection.setAdmin(true);
                                         }
@@ -149,6 +144,7 @@ public class Server2 {
                                         System.out.println(command[2] + " " + client.getName());
                                         if (command[2].equals(client.getName())) {
                                             client.write("PM " + clientConnection.getName() + ": " + command[3]);
+                                            clientConnection.write("PM " + clientConnection.getName() + ": " + command[3]);
                                             userFound = true;
                                         }
                                     }
@@ -173,6 +169,13 @@ public class Server2 {
                                                 clientList.remove(client);
                                             }
                                         }
+
+                                    } else if (command[1].equals("ban")) {
+                                        for (ConnectionToClient client: clientList) {
+                                            if (client.getName().equals(command[2])) {
+                                                System.out.println("yeet");
+                                            }
+                                        }
                                     }
                                 } else {
                                     output.write("---You Don't Have Permissions For This Command---");
@@ -191,23 +194,13 @@ public class Server2 {
                 }
             }
 
-            // Send a message to the client
-
-            // close the socket
-//            try {
-//                input.close();
-//                output.close();
-//                client.close();
-//            }catch (Exception e) {
-//                System.out.println("Failed to close socket");
-//            }
         }
 
         public void updateStatusList() {
             for (int i = 0; i < clientList.size();i++) {
             	String longString = "";
                 for (ConnectionToClient client: clientList) {
-                	longString += "*" + client.getName();
+                        longString += "*" + client.getName();
                 }
                 longString += "*";
                 clientList.get(i).write(longString);
