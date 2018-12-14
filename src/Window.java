@@ -2,8 +2,12 @@
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
@@ -32,11 +36,12 @@ public class Window extends JFrame {
     
 	InputStreamReader inputStream;
 	PrintWriter outputStream;
-	BufferedReader reader;
-	JFrame dashboardFrame;
-    
+	BufferedReader reader;    
+	JLayeredPane allPane;
+		
     public Window(int x, int y) {
         super("Chat++");
+        
         
 		try {
 			mySocket = new Socket("127.0.0.1", 5000);
@@ -45,26 +50,22 @@ public class Window extends JFrame {
 		}
 
 
+
         //generate frame
         this.x = x;
         this.y = y;
-        this.setLocation(100, 0);
+        this.setLocation(0, 0);
         this.setSize(new Dimension(x, y));
         this.setResizable(false);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        
+		allPane = new JLayeredPane();
+		allPane.setBounds(0, 0, x, y);
+		allPane.setLayout(new BorderLayout());
 
-        
-        /* -- INCOMING PATCH UPDATE -- FRIEND DASHBOARD */
-        dashboardFrame = new JFrame("Online");
-        dashboardFrame.setBounds(0, 0, 100, 400);
-        dashboardFrame.setSize(100, 0);
-        dashboardFrame.setResizable(false);
-        dashboardFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);  
-        this.dashboardPanel = new DashBoardPanel(this);
-        dashboardFrame.getContentPane().add(dashboardPanel);
-        dashboardFrame.setVisible(true);
-        dashboardFrame.setAlwaysOnTop(true);
-        
+		this.dashboardPanel = new DashBoardPanel(this);
+        allPane.add(dashboardPanel);
+
         
         
         //generate panels
@@ -85,6 +86,8 @@ public class Window extends JFrame {
         this.setVisible(true);
     }
     
+    
+    
     public void createAllChatPanel(String username) {
         this.allChatPanel = new AllChatPanel(this, username);
         
@@ -99,7 +102,6 @@ public class Window extends JFrame {
 				
 	        	while(true) {
 	        		
-	        		dashboardFrame.setSize(100, dashboardPanel.getOnlineList().size()*50 + 25);
 	        		
 		    		try {
 		    			msg = reader.readLine();
@@ -125,13 +127,14 @@ public class Window extends JFrame {
 	        }
 		});
 
+    	clientThread.start();
 
 		try {
 			Thread.sleep(200);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-    	clientThread.start();
+		
     }
     
     public void sendAll(String msg) {
@@ -181,7 +184,11 @@ public class Window extends JFrame {
 
     private void switchPanel(JPanel newPanel) {
         getContentPane().removeAll();
-        getContentPane().add(newPanel); 
+    	allPane.removeAll();
+        allPane.add(dashboardPanel);
+        dashboardPanel.setVisible(true);
+        allPane.add(newPanel);
+        getContentPane().add(allPane); 
         
         getContentPane().revalidate();
         getContentPane().repaint(); 

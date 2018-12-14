@@ -33,6 +33,10 @@ public class DashBoardPanel extends JPanel {
 	public ArrayList<String> onlineList = new ArrayList<String>();
 
 	DashBoardPanel(Window window) {
+		
+
+		
+		
 		this.window = window;
 		this.x = window.x;
 		this.y = window.y;
@@ -40,7 +44,10 @@ public class DashBoardPanel extends JPanel {
 		this.setLayout(new BorderLayout());
 		pane = new JLayeredPane();
 		pane.setBounds(0, 0, 100, y);
+		setSize(100, y);
 
+		
+		
 //		textArea = new JTextArea();
 //		textArea.setBounds(pane.getBounds().x + 10, 10, pane.getBounds().width - 10, pane.getBounds().height - 150);
 //		textArea.setEditable(false);
@@ -67,10 +74,10 @@ public class DashBoardPanel extends JPanel {
 		
 		g.setColor(Color.blue);
 		g.fillRect(0, 0, 100, y);
-		for (int i = 0; i < onlineList.size(); i++) {
-			CustomButton b = new CustomButton(onlineList.get(i), 0, i*50, 100, 50);
-			b.draw(g, this);
-		}
+//		for (int i = 0; i < onlineList.size(); i++) {
+//			CustomButton b = new CustomButton(onlineList.get(i), 0, i*50, 100, 50);
+//			b.draw(g, this);
+//		}
 		
 
 

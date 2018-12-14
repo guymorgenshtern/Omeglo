@@ -44,13 +44,13 @@ public class AllChatPanel extends JPanel {
 		// setBackground(Color.red);
 		this.setLayout(new BorderLayout());
 		pane = new JLayeredPane();
-		pane.setBounds(10, 0, x - 10, y);
+		pane.setBounds(110, 0, x - 10, y);
 
 		textArea = new JTextArea();
-		textArea.setBounds(10, 10, pane.getBounds().width - 10, pane.getBounds().height - 150);
+		textArea.setBounds(110, 10, pane.getBounds().width - 10, pane.getBounds().height - 150);
 		textArea.setEditable(false);
 		JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scroll.setBounds(10, 10, pane.getBounds().width - 10, pane.getBounds().height - 150);
+		scroll.setBounds(110, 10, pane.getBounds().width - 10, pane.getBounds().height - 150);
 		
 		
 		send = new JButton("Send");
@@ -59,7 +59,7 @@ public class AllChatPanel extends JPanel {
 		send.addActionListener(action);
 
 		textField = new JTextField(8);
-		textField.setBounds(10, send.getBounds().y, send.getBounds().x - pane.getBounds().x - 10, 30);
+		textField.setBounds(110, send.getBounds().y, send.getBounds().x - pane.getBounds().x - 10, 30);
 		textField.addKeyListener(new myKeyListener());
 
 		pane.add(scroll);

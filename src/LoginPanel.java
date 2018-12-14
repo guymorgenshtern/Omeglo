@@ -28,13 +28,13 @@ public class LoginPanel extends JPanel {
 		
 		this.setLayout(new BorderLayout());
 		pane = new JLayeredPane();
-		pane.setBounds(0, 0, x-100, y);
+		pane.setBounds(100, 0, x-100, y);
 		
 		nameField = new JTextField(8);
-		nameField.setBounds(x/2 - 180/2, 50, 180, 30);
+		nameField.setBounds(x/2 - 180/2 + 100, 50, 180, 30);
 		
 		submitName = new JButton("Submit Name");
-		submitName.setBounds(x/2 - 180/2, 90, 180, 30);
+		submitName.setBounds(x/2 - 180/2 + 100, 90, 180, 30);
 		action = new Action();
 		submitName.addActionListener(action);
 
