@@ -45,6 +45,8 @@ public class Window extends JFrame {
         
 		try {
 			mySocket = new Socket("127.0.0.1", 5000);
+			//mySocket = new Socket("98:fe:94:4b:7e:82", 5000);
+
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -66,7 +68,8 @@ public class Window extends JFrame {
 		this.dashboardPanel = new DashBoardPanel(this);
         allPane.add(dashboardPanel);
 
-        
+        allPane.setDoubleBuffered(true);
+
         
         //generate panels
         this.loginPanel = new LoginPanel(this);
@@ -105,6 +108,8 @@ public class Window extends JFrame {
 	        		
 		    		try {
 		    			msg = reader.readLine();
+		    			dashboardPanel.revalidateButtons();
+
 		    		} catch (IOException e) {
 		    			e.printStackTrace();
 		    		}
@@ -185,9 +190,13 @@ public class Window extends JFrame {
     private void switchPanel(JPanel newPanel) {
         getContentPane().removeAll();
     	allPane.removeAll();
-        allPane.add(dashboardPanel);
         dashboardPanel.setVisible(true);
+        newPanel.setDoubleBuffered(true);
+        
+        
+        allPane.add(dashboardPanel);
         allPane.add(newPanel);
+
         getContentPane().add(allPane); 
         
         getContentPane().revalidate();

@@ -31,6 +31,7 @@ public class DashBoardPanel extends JPanel {
 	BufferedReader reader;
 	
 	public ArrayList<String> onlineList = new ArrayList<String>();
+	public ArrayList<JButton> buttonList = new ArrayList<JButton>();
 
 	DashBoardPanel(Window window) {
 		
@@ -45,8 +46,9 @@ public class DashBoardPanel extends JPanel {
 		pane = new JLayeredPane();
 		pane.setBounds(0, 0, 100, y);
 		setSize(100, y);
-
 		
+
+
 		
 //		textArea = new JTextArea();
 //		textArea.setBounds(pane.getBounds().x + 10, 10, pane.getBounds().width - 10, pane.getBounds().height - 150);
@@ -55,8 +57,18 @@ public class DashBoardPanel extends JPanel {
 //		pane.add(textArea);
 		add(pane);
 		
+		onlineList.add("NISNFAISA");
+		onlineList.add("NISNFAISA");
+		onlineList.add("NISNFAISA");
+		onlineList.add("NISNFAISA");
+		onlineList.add("NISNFAISA");
+		onlineList.add("NISNFAISA");
+		revalidateButtons();
 
-
+		
+		setOpaque(false);
+		
+		setDoubleBuffered(true);
 		this.setVisible(true);
 
 	}
@@ -72,17 +84,28 @@ public class DashBoardPanel extends JPanel {
 //		}
 		
 		
-		g.setColor(Color.blue);
-		g.fillRect(0, 0, 100, y);
+//		g.setColor(Color.blue);
+//		g.fillRect(0, 0, 100, y);
 //		for (int i = 0; i < onlineList.size(); i++) {
 //			CustomButton b = new CustomButton(onlineList.get(i), 0, i*50, 100, 50);
 //			b.draw(g, this);
 //		}
 		
-
-
-
+		//revalidateButtons();
 		repaint();
+	}
+	
+	
+	public void revalidateButtons() {
+		remove(pane);
+		buttonList.clear();
+		for (int i = 0; i < onlineList.size(); i++) {
+			JButton b = new JButton(onlineList.get(i));
+			b.setBounds(10, i*50 + 10, 80, 30);
+			pane.add(b);
+		}
+		add(pane);
+		
 	}
 
 	public void addClients(String msg) {		
