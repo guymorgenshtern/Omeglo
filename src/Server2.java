@@ -154,6 +154,9 @@ public class Server2 {
                                     }
                                     System.out.println("Private Message");
 
+                                } else if (command[1].equals("help")){
+                                    output.println("/pm (name) - This will send a private message to the user");
+                                    output.println("/help - Displays a list of commands");
                                 }
                             } else if (command[0].equals("!")) { //admin commands
                                 System.out.println(clientConnection.getName() + " " + clientConnection.getAdmin());
