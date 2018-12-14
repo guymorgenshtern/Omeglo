@@ -122,7 +122,7 @@ public class Server2 {
                                 	System.out.println("SETTING NAME TO " + param);
                                 	
                                     for (ConnectionToClient client: clientList) {
-                                        if (name.equals(client.getName())) {
+                                        if (param.equals(client.getName())) {
                                             userTaken = true;
                                         }
                                     }
@@ -137,15 +137,14 @@ public class Server2 {
                                         name = param;
                                         setName = true;
                                         if (name.equals("admin")) {
-                                            admin = true;
+                                            clientConnection.setAdmin(true);
                                         }
 
-                                        //output.println("~Welcome To The Chat Server " + param + "~");
+                                        output.println("~Welcome To The Chat Server " + name + "~");
                                         output.flush();
                                     }
 
                                 } else if (command[1].equals("pm")) {
-                                    System.out.println("pm hit");
                                     for (ConnectionToClient client: clientList) {
                                         System.out.println(command[2] + " " + client.getName());
                                         if (command[2].equals(client.getName())) {
@@ -161,10 +160,12 @@ public class Server2 {
 
                                 }
                             } else if (command[0].equals("!")) { //admin commands
-                                if (name.equals(admin)) {
-                                    if (command.equals("kick")) {
+                                System.out.println(clientConnection.getName() + " " + clientConnection.getAdmin());
+                                if (clientConnection.getAdmin()) {
+                                    if (command[1].equals("kick")) {
+                                        System.out.println("kick");
                                         for (ConnectionToClient client: clientList) {
-                                            if (client.getName().equals(param)) {
+                                            if (client.getName().equals(command[2])) {
                                                 client.write("---You Have Been Stopped---");
                                                 client.socket.getInputStream().close();
                                                 client.socket.getOutputStream().close();
@@ -226,6 +227,7 @@ public class Server2 {
             } else if (msg.startsWith("!")) {
                 indicator = "!";
             }
+            try {
                 command = msg.substring(1, msg.indexOf(" "));
 
                 String leftOverString = msg.substring(msg.indexOf(" "));
@@ -238,13 +240,16 @@ public class Server2 {
                 }
 
 
+            } catch (StringIndexOutOfBoundsException e) {
+                output.write("---Command Not Found---");
+            }
+
             commandVariables[0] = indicator;
             commandVariables[1] = command;
             commandVariables[2] = parameter;
             commandVariables[3] = message;
 
             return commandVariables;
-
         }
     } // end of inner class
 
@@ -285,7 +290,7 @@ public class Server2 {
         }
 
         public void setAdmin (boolean admin) {
-
+            this.admin = admin;
         }
      }
 
