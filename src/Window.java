@@ -111,6 +111,10 @@ public class Window extends JFrame {
 //		    		msg = "*guy*yash*katelyn*alston*";
 		    		
 		    		// if * then its a client name
+		    		
+		    		
+		    		msg += "";
+		    		
 		    		if (msg.startsWith("*")) {
 		    			dashboardPanel.getOnlineList().clear();
 		    			dashboardPanel.addClients(msg);
