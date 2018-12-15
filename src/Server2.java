@@ -101,7 +101,6 @@ public class Server2 {
                     if (input.ready()) { // check for an incoming messge
                         userFound = false;
                         msg = input.readLine(); // get a message from the client
-
                         if ((!msg.startsWith("/")) && (!msg.startsWith("!"))) { //command indicators
                             for (ConnectionToClient client : clientList) {
                                 client.write(clientConnection.getName() + ": " + msg);
@@ -157,6 +156,8 @@ public class Server2 {
                                 } else if (command[1].equals("help")){
                                     output.println("/pm (name) - This will send a private message to the user");
                                     output.println("/help - Displays a list of commands");
+                                    output.println("/clear - Clears the current chat");
+                                    output.flush();
                                 }
                             } else if (command[0].equals("!")) { //admin commands
                                 System.out.println(clientConnection.getName() + " " + clientConnection.getAdmin());
@@ -179,6 +180,10 @@ public class Server2 {
                                                 System.out.println("yeet");
                                             }
                                         }
+                                    } else if (command[1].equals("help")) {
+                                        output.println("!kick (name) - Kicks the specified user from the server");
+                                        output.println("!ban (name) - Bans the IP of the specified user");
+                                        output.flush();
                                     }
                                 } else {
                                     output.write("---You Don't Have Permissions For This Command---");
