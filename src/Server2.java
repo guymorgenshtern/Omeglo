@@ -11,7 +11,9 @@ public class Server2 {
     ServerSocket serverSock;// server socket for connection
     static Boolean running = true; // controls if the server is accepting clients
     ArrayList<ConnectionToClient> clientList = new ArrayList<>();
+    ArrayList<ConnectionToClient> banList = new ArrayList<>();
     ConnectionToClient tempConnection;
+    boolean isBanned = false;
 
     /**
      * Main
@@ -36,12 +38,19 @@ public class Server2 {
                 client = serverSock.accept(); // wait for connection
                 System.out.println("Client connected");
                 tempConnection = new ConnectionToClient(client);
-                // Note: you might want to keep references to all clients if you plan to
-                // broadcast messages
-                // Also: Queues are good tools to buffer incoming/outgoing messages
-                Thread t = new Thread(new ConnectionHandler(client, tempConnection)); // create a thread for the new client
-                // and pass in the socket
-                t.start(); // start the new thread
+                for (ConnectionToClient clientCheck: banList) {
+                    if (tempConnection.getSocket().getLocalAddress().toString().equals
+                            (clientCheck.getSocket().getLocalAddress().toString())) {
+                        tempConnection.write("You are a banned user");
+                        System.out.println("banned");
+                        isBanned = true;
+                    }
+                }
+                if (!isBanned) {
+                    Thread t = new Thread(new ConnectionHandler(client, tempConnection)); // create a thread for the new client
+                    // and pass in the socket
+                    t.start(); // start the new thread
+                }
             }
         } catch (Exception e) {
             // System.out.println("Error accepting connection");
@@ -113,8 +122,6 @@ public class Server2 {
                                 	
                                 	param = command[2];
                                 	
-                                	System.out.println("SETTING NAME TO " + param);
-                                	
                                     for (ConnectionToClient client: clientList) {
                                         if (param.equals(client.getName())) {
                                             userTaken = true;
@@ -155,11 +162,15 @@ public class Server2 {
                                     System.out.println("Private Message");
 
                                 } else if (command[1].equals("help")){
-                                    System.out.println("esyseyesy");
                                     output.println("/pm (name) - This will send a private message to the user");
                                     output.println("/help - Displays a list of commands");
                                     output.println("/clear - Clears the current chat");
                                     output.flush();
+                                } else if (command[1].equals("quit")) {
+                                    output.println("Quitting");
+                                    clientConnection.inputStream.close();
+                                    clientConnection.outputStream.close();
+                                    clientList.remove(clientConnection);
                                 }
                             } else if (command[0].equals("!")) { //admin commands
                                 System.out.println(clientConnection.getName() + " " + clientConnection.getAdmin());
@@ -169,9 +180,9 @@ public class Server2 {
                                         for (ConnectionToClient client: clientList) {
                                             if (client.getName().equals(command[2])) {
                                                 client.write("---You Have Been Stopped---");
-                                                client.socket.getInputStream().close();
-                                                client.socket.getOutputStream().close();
-                                                client.socket.close();
+                                                client.getSocket().getInputStream().close();
+                                                client.getSocket().getOutputStream().close();
+                                                client.getSocket().close();
                                                 clientList.remove(client);
                                             }
                                         }
@@ -179,7 +190,10 @@ public class Server2 {
                                     } else if (command[1].equals("ban")) {
                                         for (ConnectionToClient client: clientList) {
                                             if (client.getName().equals(command[2])) {
-                                                System.out.println("yeet");
+                                                banList.add(client);
+                                                client.inputStream.close();
+                                                client.outputStream.close();
+                                                clientList.remove(client);
                                             }
                                         }
                                     } else if (command[1].equals("help")) {
@@ -255,12 +269,13 @@ public class Server2 {
     } // end of inner class
 
     private class ConnectionToClient {
-        Socket socket;
-        InputStreamReader inputStream;
-        PrintWriter outputStream;
-        BufferedReader reader;
-        String name;
-        boolean admin;
+
+        private Socket socket;
+        private InputStreamReader inputStream;
+        private PrintWriter outputStream;
+        private BufferedReader reader;
+        private String name;
+        private boolean admin;
 
         ConnectionToClient(Socket socket) {
             this.socket = socket;
@@ -293,6 +308,12 @@ public class Server2 {
         public void setAdmin (boolean admin) {
             this.admin = admin;
         }
+
+        public Socket getSocket() {
+            return socket;
+        }
      }
+
+
 
 }
