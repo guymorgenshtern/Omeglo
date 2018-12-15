@@ -165,6 +165,7 @@ public class Server2 {
                                     output.println("/pm (name) - This will send a private message to the user");
                                     output.println("/help - Displays a list of commands");
                                     output.println("/clear - Clears the current chat");
+                                    output.print("/quit - quits the server");
                                     output.flush();
                                 } else if (command[1].equals("quit")) {
                                     output.println("Quitting");
