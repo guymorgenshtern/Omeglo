@@ -108,6 +108,7 @@ public class Server2 {
                         } else {
                             command = findCommand(msg);
                             if (command[0].equals("/")) {
+                                System.out.println(command[1] + "yeey");
                                 if (command[1].equals("name") ) {
                                 	
                                 	param = command[2];
@@ -154,6 +155,7 @@ public class Server2 {
                                     System.out.println("Private Message");
 
                                 } else if (command[1].equals("help")){
+                                    System.out.println("esyseyesy");
                                     output.println("/pm (name) - This will send a private message to the user");
                                     output.println("/help - Displays a list of commands");
                                     output.println("/clear - Clears the current chat");
@@ -228,13 +230,14 @@ public class Server2 {
             } else if (msg.startsWith("!")) {
                 indicator = "!";
             }
-
+            command = msg.substring(1);
+            try {
                 command = msg.substring(1, msg.indexOf(" "));
 
                 String leftOverString = msg.substring(msg.indexOf(" "));
                 parameter = leftOverString.substring(leftOverString.indexOf(" ") + 1);
 
-                try {
+
                     parameter = leftOverString.substring(leftOverString.indexOf(" ") + 1,
                             leftOverString.indexOf(" ", leftOverString.indexOf(" ") + 1));
                     leftOverString = leftOverString.substring(leftOverString.indexOf(" ", leftOverString.indexOf(" ") + 1) + 1);

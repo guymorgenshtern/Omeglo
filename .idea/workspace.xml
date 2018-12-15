@@ -35,37 +35,23 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="6386" />
+          <entry key="java" value="6451" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="6386" />
+          <entry key="JAVA" value="6451" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Server.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2990">
-              <caret line="138" column="29" selection-start-line="138" selection-start-column="29" selection-end-line="138" selection-end-column="29" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#601#602#0" expanded="true" />
-                <element signature="e#654#655#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Server2.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="184" column="101" selection-start-line="184" selection-start-column="101" selection-end-line="184" selection-end-column="101" />
+            <state relative-caret-position="47">
+              <caret line="229" column="45" lean-forward="true" selection-start-line="229" selection-start-column="45" selection-end-line="229" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -277,7 +263,7 @@
     <entry file="file://$PROJECT_DIR$/src/Client.java" />
     <entry file="file://$PROJECT_DIR$/src/Server.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2990">
+        <state relative-caret-position="-379">
           <caret line="138" column="29" selection-start-line="138" selection-start-column="29" selection-end-line="138" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -289,8 +275,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Server2.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="184" column="101" selection-start-line="184" selection-start-column="101" selection-end-line="184" selection-end-column="101" />
+        <state relative-caret-position="47">
+          <caret line="229" column="45" lean-forward="true" selection-start-line="229" selection-start-column="45" selection-end-line="229" selection-end-column="45" />
         </state>
       </provider>
     </entry>
