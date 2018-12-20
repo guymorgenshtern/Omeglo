@@ -150,8 +150,8 @@ public class Server2 {
                                     for (ConnectionToClient client: clientList) {
                                         System.out.println(command[2] + " " + client.getName());
                                         if (command[2].equals(client.getName())) {
-                                            client.write("PM " + clientConnection.getName() + ": " + command[3]);
-                                            clientConnection.write("PM " + clientConnection.getName() + ": " + command[3]);
+                                            client.write("PM From" + clientConnection.getName() + ": " + command[3]);
+                                            clientConnection.write("PM To " + client.getName() + ": " + command[3]);
                                             userFound = true;
                                         }
                                     }
@@ -192,7 +192,7 @@ public class Server2 {
                                         for (ConnectionToClient client: clientList) {
                                             if (client.getName().equals(command[2])) {
                                                 System.out.println(client.getSocket().getRemoteSocketAddress().toString());
-                                                output.println("~ban");
+                                                client.write("~ban");
                                                 banList.add(client);
                                                 client.inputStream.close();
                                                 client.outputStream.close();
