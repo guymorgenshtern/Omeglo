@@ -39,8 +39,8 @@ public class Server2 {
                 System.out.println("Client connected");
                 tempConnection = new ConnectionToClient(client);
                 for (ConnectionToClient clientCheck: banList) {
-                    if (tempConnection.getSocket().getLocalAddress().toString().equals
-                            (clientCheck.getSocket().getLocalAddress().toString())) {
+                    if (tempConnection.getSocket().getRemoteSocketAddress().toString().equals
+                            (clientCheck.getSocket().getRemoteSocketAddress().toString())) {
                         tempConnection.write("You are a banned user");
                         System.out.println("banned");
                         isBanned = true;
@@ -191,6 +191,8 @@ public class Server2 {
                                     } else if (command[1].equals("ban")) {
                                         for (ConnectionToClient client: clientList) {
                                             if (client.getName().equals(command[2])) {
+                                                System.out.println(client.getSocket().getRemoteSocketAddress().toString());
+                                                output.println("~ban");
                                                 banList.add(client);
                                                 client.inputStream.close();
                                                 client.outputStream.close();
