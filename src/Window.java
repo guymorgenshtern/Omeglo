@@ -112,8 +112,10 @@ public class Window extends JFrame {
 		    		if (msg.startsWith("*")) {
 		    			dashboardPanel.getOnlineList().clear();
 		    			dashboardPanel.addClients(msg);
-		    		} else if(msg.startsWith("~ban")) {
+		    			System.out.println(msg);
+		    		} else if(msg.startsWith("~ban") || msg.startsWith("null") || msg.startsWith("/quit")) {
 		    			System.exit(0);
+		    			sendAll("/quit");
 		    		} else {
 			    		allChatPanel.write(msg);
 		    		}
