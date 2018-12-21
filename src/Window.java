@@ -43,7 +43,9 @@ public class Window extends JFrame {
         
         
 		try {
-			mySocket = new Socket("192.168.1.123", 5000);
+			//mySocket = new Socket("192.168.1.123", 5000);
+			mySocket = new Socket("127.0.0.1", 5000);
+
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -112,7 +114,8 @@ public class Window extends JFrame {
 		    		if (msg.startsWith("*")) {
 		    			dashboardPanel.getOnlineList().clear();
 		    			dashboardPanel.addClients(msg);
-		    			System.out.println(msg);
+		    			System.out.println("UPDATECLIENTS: " + msg);
+			    		allChatPanel.write("UPDATECLIENTS: " + msg);
 		    		} else if(msg.startsWith("~ban") || msg.startsWith("null") || msg.startsWith("/quit")) {
 		    			System.exit(0);
 		    			sendAll("/quit");
