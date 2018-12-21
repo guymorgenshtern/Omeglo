@@ -90,13 +90,13 @@ public class DashBoardPanel extends JPanel {
 //			b.draw(g, this);
 //		}
 		
-		revalidateButtons();
 		repaint();
 	}
 	
 	
 	public void revalidateButtons() {
 		remove(pane);
+		pane.removeAll();
 		buttonList.clear();
 		for (int i = 0; i < onlineList.size(); i++) {
 			JButton b = new JButton(onlineList.get(i));
@@ -111,6 +111,8 @@ public class DashBoardPanel extends JPanel {
 
 	public void addClients(String msg) {		
 		if (msg.length() < 2) {
+			System.out.println("SIZE: "+ onlineList.size());
+			revalidateButtons();
 			return;
 		}
 		if (msg.startsWith("*")) {
@@ -123,8 +125,8 @@ public class DashBoardPanel extends JPanel {
 		}
 	}
 	
-	public ArrayList<String> getOnlineList() {
-		return onlineList;
+	public void clearOnlineList() {
+		onlineList.clear();
 	}
 	
 	private class Action implements ActionListener {
