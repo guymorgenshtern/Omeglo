@@ -150,7 +150,7 @@ public class Server2 {
                                     for (ConnectionToClient client: clientList) {
                                         System.out.println(command[2] + " " + client.getName());
                                         if (command[2].equals(client.getName())) {
-                                            client.write("PM From" + clientConnection.getName() + ": " + command[3]);
+                                            client.write("PM From " + clientConnection.getName() + ": " + command[3]);
                                             clientConnection.write("PM To " + client.getName() + ": " + command[3]);
                                             userFound = true;
                                         }
@@ -169,23 +169,28 @@ public class Server2 {
                                     output.flush();
                                 } else if (command[1].equals("quit")) {
                                     output.println("Quitting");
+                                    output.flush();
                                     clientConnection.inputStream.close();
                                     clientConnection.outputStream.close();
                                     clientList.remove(clientConnection);
                                 }
                             } else if (command[0].equals("!")) { //admin commands
+                                ConnectionToClient buffer = null;
+                                boolean kickFound = false;
                                 System.out.println(clientConnection.getName() + " " + clientConnection.getAdmin());
                                 if (clientConnection.getAdmin()) {
                                     if (command[1].equals("kick")) {
-                                        System.out.println("kick");
-                                        for (ConnectionToClient client: clientList) {
-                                            if (client.getName().equals(command[2])) {
-                                                client.write("---You Have Been Stopped---");
-                                                client.getSocket().getInputStream().close();
-                                                client.getSocket().getOutputStream().close();
-                                                client.getSocket().close();
-                                                clientList.remove(client);
+                                            for (ConnectionToClient client : clientList) {
+                                                if (client.getName().equals(command[2])) {
+                                                    client.write("---You Have Been Stopped---");
+                                                    buffer = client;
+                                                    kickFound = true;
+                                                }
+
                                             }
+                                        if (kickFound) {
+                                            clientList.remove(buffer);
+                                            updateStatusList();
                                         }
 
                                     } else if (command[1].equals("ban")) {
@@ -230,6 +235,7 @@ public class Server2 {
                         longString += "*" + client.getName();
                 }
                 longString += "*";
+                System.out.println(longString);
                 clientList.get(i).write(longString);
             }
         }
